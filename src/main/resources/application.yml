@@ -1,0 +1,12 @@
+server:
+  port: 9000
+  netty:
+    connection-timeout: 2s    # 서버와 TCP 연결을 수립하기까지 기다리는 시간
+    idle-timeout: 15s    # 데이터가 전송되지 않는 경우 TCP 연결을 끊기 전에 기다리는 시간
+  shutdown: graceful    # 우아한 종료 활성화
+
+spring:
+  application:
+    name: edge-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s # 우아한 종료 기간을 15초로 설정
