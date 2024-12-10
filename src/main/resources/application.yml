@@ -12,6 +12,13 @@ spring:
     timeout-per-shutdown-phase: 15s # 우아한 종료 기간을 15초로 설정
   cloud:
     gateway:
+      httpclient: # HTTP 클라이언트에 대한 설정 속성
+        connect-timeout: 2000 # 연결을 수립하기까지의 타임아웃(밀리초)
+        response-timeout: 5s  # 응답을 받을 때까지의 타임아웃(기간)
+        pool:
+          type: elastic # 연결 풀 유형(elastic, fixed, disabled 중 하나)
+          max-idle-time: 15s  # 통신 채널이 닫히기 전 대기하는 시간
+          max-life-time: 60s  # 통신 채널이 열려 있는 기간
       routes: # 라우트 정의 목록
         - id: catalog-route # 라우트 ID
           uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
