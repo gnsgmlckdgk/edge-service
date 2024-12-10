@@ -10,3 +10,15 @@ spring:
     name: edge-service
   lifecycle:
     timeout-per-shutdown-phase: 15s # 우아한 종료 기간을 15초로 설정
+  cloud:
+    gateway:
+      routes: # 라우트 정의 목록
+        - id: catalog-route # 라우트 ID
+          uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
+          predicates:
+            - Path=/books/**  # 일치하는 경로를 술어로 사용한다.
+        - id: order-route
+          # URI 값은 환경 변수로부터 오거나 해당 환경 변수가 없는 경우 기본값을 사용한다.
+          uri: ${ORDER_SERVICE_URL:http://localhost:9002}/orders
+          predicates:
+            - Path=/orders/**
