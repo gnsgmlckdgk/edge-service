@@ -12,6 +12,19 @@ spring:
     timeout-per-shutdown-phase: 15s # 우아한 종료 기간을 15초로 설정
   cloud:
     gateway:
+      default-filters:  # 기본 필터 목록
+        - name: Retry # 필터 이름
+          args:
+            retries: 3  # 최대 3회의 재시도
+            method: GET # GET 요청만 재시도
+            series: SERVER_ERROR  # 5xx 에러에 대해서만 재시도
+            exceptions: java.io.IOException,
+              java.util.concurrent.TimeoutException # 지정한 예외가 발생할 때만 재시도
+            backoff:  # 재시도는 firstBackoff* (factor^n) 공식을 사용해 계산
+              firstBackoff: 50ms
+              maxBackOff: 500ms
+              factor: 2
+              basedOnPreviousValue: false
       httpclient: # HTTP 클라이언트에 대한 설정 속성
         connect-timeout: 2000 # 연결을 수립하기까지의 타임아웃(밀리초)
         response-timeout: 5s  # 응답을 받을 때까지의 타임아웃(기간)
@@ -24,8 +37,34 @@ spring:
           uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
           predicates:
             - Path=/books/**  # 일치하는 경로를 술어로 사용한다.
+          filters:
+            - name: CircuitBreaker  # 필터 이름
+              args:
+                name: catalogCircuitBreaker # 서킷브레이커 이름
+                fallbackUri: forward:/catalog-fallback  # 회로가 개방 상태일 때 요청을 이 URI 로 전달
         - id: order-route
           # URI 값은 환경 변수로부터 오거나 해당 환경 변수가 없는 경우 기본값을 사용한다.
           uri: ${ORDER_SERVICE_URL:http://localhost:9002}/orders
           predicates:
             - Path=/orders/**
+          filters:
+            - name: CircuitBreaker  # 서킷블레이커에 대해 정의한 폴백 없음
+              args:
+                name: orderCircuitBreaker
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:  # 모든 서킷 브레이커에 대한 기본 설정
+        slidingWindowSize: 20 # 회로가 폐쇄된 상태일 때 호출의 결과를 기록하는데 사용하는 슬라이딩 윈도의 크기
+        permittedNumberOfCallsInHalfOpenState: 5  # 회로가 반개방 상태일 때 허용되는 호출의 수
+        failureRateThreshold: 50  # 실패율이 임계값 이상이면 회로는 개방 상태로 바뀐다.
+        waitDurationInOpenState: 15000  # 개방 상태에서 반개방 상태로 가기까지 기다릴 시간(밀리초)
+  timelimiter:
+    configs:
+      default:  # 모든 시간 제한에 대한 기본 설정
+        timeoutDuration: 5s # 타임아웃 설정(초)
+
+logging:
+  level:
+    io.github.resilience4j: DEBUG

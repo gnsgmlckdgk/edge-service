@@ -26,6 +26,8 @@ dependencies {
 	// 스프링 클라우드 게이트웨이 리액티브 스택 기반 ( 비리액티브 스택 기반은 뒤에 gateway-mvc 버전으로 변경, 둘 다 넣으면 충돌할 수 있음 )
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
