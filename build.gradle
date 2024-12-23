@@ -19,23 +19,32 @@ repositories {
 }
 
 ext {
+	// 상수 정의
 	set('springCloudVersion', "2023.0.4")
+	set('testcontainersVersion', "1.17.3")
 }
 
 dependencies {
 	// 스프링 클라우드 게이트웨이 리액티브 스택 기반 ( 비리액티브 스택 기반은 뒤에 gateway-mvc 버전으로 변경, 둘 다 넣으면 충돌할 수 있음 )
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-
+	// 서킷브레이커
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+	// 레디스 리액티브
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
+	// 테스트 컨테이너
+	implementation 'org.springframework.session:spring-session-data-redis'
+	testImplementation 'org.testcontainers:junit-jupiter'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 dependencyManagement {
 	imports {
+		// 버전 관리
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
 	}
 }
 

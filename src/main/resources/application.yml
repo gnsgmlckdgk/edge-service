@@ -10,10 +10,18 @@ spring:
     name: edge-service
   lifecycle:
     timeout-per-shutdown-phase: 15s # 우아한 종료 기간을 15초로 설정
+  # 세션 설정
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: polar:edge
+
   cloud:
     gateway:
       default-filters:  # 기본 필터 목록
-        - name: Retry # 필터 이름
+        - SaveSession # 요청을 서비스로 전달하기 전에 세션 데이터를 저장한다.
+        - name: Retry # 필터 이름, 재시도설정
           args:
             retries: 3  # 최대 3회의 재시도
             method: GET # GET 요청만 재시도
@@ -25,6 +33,13 @@ spring:
               maxBackOff: 500ms
               factor: 2
               basedOnPreviousValue: false
+        - name: RequestRateLimiter  # 요청제한설정
+          args:
+            redis-rate-limiter:
+              replenishRate: 10 # 초당 버킷에 떨어지는 토큰의 수
+              burstCapacity: 20 # 최대 20개의 요청까지 허용
+              requestedTokens: 1  # 하나의 요청 처리에 몇 개의 토큰이 사용되는지 지정
+
       httpclient: # HTTP 클라이언트에 대한 설정 속성
         connect-timeout: 2000 # 연결을 수립하기까지의 타임아웃(밀리초)
         response-timeout: 5s  # 응답을 받을 때까지의 타임아웃(기간)
@@ -51,6 +66,12 @@ spring:
             - name: CircuitBreaker  # 서킷블레이커에 대해 정의한 폴백 없음
               args:
                 name: orderCircuitBreaker
+  # 레디스
+  redis:
+    connect-timeout: 2s # 연결이 수립되기까지 기다리는 시간
+    host: localhost # 레디스 호스트 기본값
+    port: 6379  # 레디스 포트 기본값
+    timeout: 1s # 응답을 받기까지 기다리는 시간의 한도
 
 resilience4j:
   circuitbreaker:
