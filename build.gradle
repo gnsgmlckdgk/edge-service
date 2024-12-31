@@ -27,6 +27,8 @@ ext {
 dependencies {
 	// 스프링 클라우드 게이트웨이 리액티브 스택 기반 ( 비리액티브 스택 기반은 뒤에 gateway-mvc 버전으로 변경, 둘 다 넣으면 충돌할 수 있음 )
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+	// 스프링 클라우드 컨피그
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	// 서킷브레이커
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 	// 레디스 리액티브
@@ -45,6 +47,20 @@ dependencyManagement {
 		// 버전 관리
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
+}
+
+bootBuildImage {	// 빌드팩을 사용해 OCI 이미지를 빌드하기 위한 스프링 부트 플러그인 작업
+	imageName = "${project.name}"	// 빌드할 OCI 이미지의 이름. 이 이름을 그래들의 프로젝트 설정에서 정의한 이름과 같다. 버전 번호를 사용하지 않고 암묵적인 latest 태그를 사용한다.
+	environment = ["BP_JVM_VERSION" : "17.*"]	// 이미지에 설치할 JVM 버전.
+
+	// 컨테이너 저장소 연결을 설정하기 위한 섹션
+	docker {
+		publishRegistry {	// 컨테이너 저장소 인증을 설정하기 위한 섹션. 값은 그래들 속성을 통해 전달된다.
+			username = project.findProperty("registryUsername")
+			password = project.findProperty("registryToken")
+			url = project.findProperty("registryUrl")
+		}
 	}
 }
 

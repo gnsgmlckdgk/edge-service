@@ -1,0 +1,89 @@
+name: Commit Stage  # 워크플로의 이름
+on: push            # 새 코드를 저장소로 푸시하면 워크플로를 시작한다.
+
+env:
+  REGISTRY: ghcr.io                       # 깃허브 컨테이너 저장소를 사용한다
+  IMAGE_NAME: gnsgmlckdgk/edge-service    # 이미지의 이름. 자신의 깃허브 유저명을 소문자로 추가한다.
+  VERSION: latest                         # 지금은 새 이미지를 latest로 태깅한다.
+
+jobs:
+  # 작업의 고유 식별자
+  build:
+    name: Build and Test
+    runs-on: ubuntu-22.04     # 작업이 실행될 머신의 유형
+    permissions:              # 작업에 부여된 권한
+      contents: read          # 현재 깃 저장소를 체크아웃 할 수 있는 권한
+      security-events: write  # 깃허브에 보안 이벤트를 제출할 수 있는 권한
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3     # 현재 깃 저장소(edge-service)를 체크아웃한다.
+      - name: Set up JDK
+        uses: actions/setup-java@v3   # 자바 런타임을 설치하고 설정한다.
+        with:                         # 사용할 버전, 유형, 캐쉬유형 정의한다.
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: CodeVulnerability scanning
+        uses: anchore/scan-action@v3      # 그라이프를 사용해 취약성을 스캔한다.
+        id: scan                          # 현재 단계의 식별자를 할당하고 이후의 단계에서 참고할 수 있다.
+        with:
+          path: "${{ github.workspace }}" # 체크아웃 저장소 경로
+          fail-build: false               # 보안 취약성 발견 시 빌드 실패 여부
+          severity-cutoff: high           # 오류로 간주할 최소 수준의 보안 유형(낮음, 중간, 높음, 치명적)
+          acs-report-enable: true         # 스캔이 완료된 이후에 리포트를 생성할지 여부
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v2  # 깃허브로 보안 취약성리포트(SARIF 형식) 전송
+        #  이전 단계가 실패하더라도 리포트 전송
+        if: success() || failure()
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }} # 이전 단계 결과의 리포트를 가져온다.
+      - name: Build, unit tests and integration tests
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+
+  package:
+    name: Package and Publish
+    if: ${{ github.ref == 'refs/heads/main' }}  # JOB을 main 브랜치에 대해서만 실행한다.
+    needs: [ build ]                            # 'build' 잡이 성공적으로 수행된 경우에만 이 잡을 실행한다.
+    runs-on: ubuntu-22.04                       # 우분투22.04에서 job을 실행
+    permissions:
+      contents: read                            # 현재 git 저장소를 체크아웃 하기 위한 권한
+      packages: write                           # 깃허브 컨테이너 저장소로 이미지를 업로드하기 위한 권한
+      security-events: write                    # 깃허브로 보안 이벤트를 제출하기 위한 권한
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3               # 현재 깃 저장소(edge-service)를 체크아웃 한다.
+      - name: Set up JDK
+        uses: actions/setup-java@v3             # 자바 런타임을 설치하고 설정한다.
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Build container image
+        # 컨테이너 이미지를 빌드하고 릴리스 후보를 위한 이름을 정의하기 위해 스프링 부트의 빌드팩 통합을 사용한다.
+        run: |
+          chmod +x gradlew
+          ./gradlew bootBuildImage \
+          --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+      - name: OCI image vulnerability scanning
+        uses: anchore/scan-action@v3            # 취약성 검사를 위해 그라이프를 사용해 릴리스 후보 이미지를 스캔한다.
+        id: scan
+        with:
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          fail-build: false                     # 이미지에서 취약점이 발견되더라도 빌드를 실패로 만들지 않는다.
+          severity-cutoff: high
+          acs-report-enable: true
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v2  # 깃허브로 보안 취약성 리포트를 업로드 한다.(SARIF 형식)
+        if: success() || failure()
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+      - name: Log into container registry
+        uses: docker/login-action@v2                # 깃허브 컨테이너 저장소와 인증한다.
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}     # 저장소와 인증하기 위해 필요한 토큰 깃허브 액션이 제공한다.
+      - name: Publish container image
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }} # 릴리스 후보를 저장소로 푸쉬

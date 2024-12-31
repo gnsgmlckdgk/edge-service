@@ -17,7 +17,23 @@ spring:
     redis:
       namespace: polar:edge
 
+  # 컨피그 서버 클라이언트 설정
+  config:
+    import: "optional:configserver:"  # 가능하면 컨피그 서버에서 설정 데이터를 가져온다.
+
   cloud:
+    # 컨피그 서버 클라이언트 설정
+    config:
+      uri: http://localhost:8888  # 설정 서버의 URL
+      request-connect-timeout: 30000 # 30s, 설정 서버에 연결될 때까지 기다리는 시간(밀리초)
+      request-read-timeout: 30000  # 30s, 설정 서버에서 설정 데이터를 읽을 때까지 기다리는 시간(밀리초)
+      fail-fast: false # 설정 서버 연결 실패를 치명적 오류로 인식[true 여야지 재시도가 작동한다.]
+      retry:
+        max-attempts: 10 # 시도의 최대 횟수
+        initial-interval: 1000  # 최초 재시도 지연시간(밀리초)
+        max-interval: 5000  # 재시도 지연 최대 시간(밀리초)
+        multiplier: 1.1 # 지연 시간 계산 승수
+    # 게이트웨이 설정
     gateway:
       default-filters:  # 기본 필터 목록
         - SaveSession # 요청을 서비스로 전달하기 전에 세션 데이터를 저장한다.
@@ -66,6 +82,14 @@ spring:
             - name: CircuitBreaker  # 서킷블레이커에 대해 정의한 폴백 없음
               args:
                 name: orderCircuitBreaker
+
+  # 컨피그 서버 클라이언트 설정 ---------------------------------------------------------------------------
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: refresh  # HTTP를 통해 /actuator/refresh 엔드포인트를 노출한다.[ 컨피그 서버 설정 가져와 새로 적용 ]
+
   # 레디스
   redis:
     connect-timeout: 2s # 연결이 수립되기까지 기다리는 시간
