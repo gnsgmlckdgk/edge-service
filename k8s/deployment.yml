@@ -1,0 +1,54 @@
+# 배포 객체에 대한 API 버전
+apiVersion: apps/v1
+# 생성할 객체의 유형
+kind: Deployment
+metadata:
+  # 배포의 이름
+  name: edge-service
+  # 배포에 추가할 레이블의 집합
+  labels:
+    # 이 배포는 "app=edge-service"라는 레이블을 갖는다.
+    app: edge-service
+spec:
+  # 몇 개의 파드 복제본을 배포할 것인지 설정한다.
+  replicas: 1
+  # 확장할 파드를 선택하기 위해 사용할 레이블을 정의한다.
+  selector:
+    matchLabels:
+      app: edge-service
+  # 파드 생성을 위한 템플릿
+  template:
+    metadata:
+      # 파드 객체에 추가되는 레이블. 레이블은 셀렉터로 사용하는 것과 일치해야한다.
+      labels:
+        app: edge-service
+    spec:
+      # 파드 컨테이너의 목록
+      containers:
+        # 파드 이름
+        - name: edge-service
+          # 컨테이너를 실행하기 위해 사용할 이미지. 태그가 정의되지 않으면 latest가 암묵적으로 사용된다.
+          # 도커 이미지 저장소가 아니라 내가 올린 깃허브 이미지 저장소에서 다운로드
+          image: ghcr.io/gnsgmlckdgk/edge-service:latest
+          # 이미지가 로컬에 없는 경우에만
+          # 컨테이너 저장소(내가 올린 깃허브 컨테이너 저장소)에서 이미지를 다운로드 받을 것을 쿠버네티스에게 지시한다.
+          #imagePullPolicy: IfNotPresent
+          # 무조건 저장소에서 새로 받아옴(로컬에 있어도)
+          imagePullPolicy: Always
+
+          # 쿠버네티스 파드에 SIGTERM 신호를 보내기 전에 5초를 기다리게 한다.
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 5"]
+          ports:
+            # 컨테이너에 의해 노출되는 포트
+            - containerPort: 9000
+          # 파드로 전달되는 환경 변수의 목록
+          env:
+            # 메모리 계산을 위한 스레드의 수를 설정하기 위한 패키토 빌드팩 환경 변수
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
+            # 컨피그 서비스 url를 지정하도록 설정
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service

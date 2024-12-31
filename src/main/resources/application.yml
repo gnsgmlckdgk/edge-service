@@ -36,7 +36,7 @@ spring:
     # 게이트웨이 설정
     gateway:
       default-filters:  # 기본 필터 목록
-        - SaveSession # 요청을 서비스로 전달하기 전에 세션 데이터를 저장한다.
+        #- SaveSession # 요청을 서비스로 전달하기 전에 세션 데이터를 저장한다.
         - name: Retry # 필터 이름, 재시도설정
           args:
             retries: 3  # 최대 3회의 재시도
