@@ -52,3 +52,9 @@ spec:
             # 컨피그 서비스 url를 지정하도록 설정
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
+            # 카탈로그 서비스 url
+            - name: CATALOG_SERVICE_URL
+              value: http://catalog-service
+            # 오더 서비스 url
+            - name: ORDER_SERVICE_URL
+              value: http://order-service
