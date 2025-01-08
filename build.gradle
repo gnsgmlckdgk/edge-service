@@ -64,6 +64,127 @@ bootBuildImage {	// 빌드팩을 사용해 OCI 이미지를 빌드하기 위한 
 	}
 }
 
+// 의존성 찾기(목록 확인용)
+// ./gradlew listDependencies
+task listDependencies {
+	doLast {
+		println "\nAll dependencies:"
+		configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+			def id = "${artifact.moduleVersion.id.group}:${artifact.moduleVersion.id.name}"
+			println " - $id"
+		}
+	}
+}
+
+// 의존성 있는지 체크
+// ./gradlew checkDependencies
+task checkDependencies {
+	doLast {
+		println "\nAll resolved dependencies:"
+		configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+			def module = artifact.moduleVersion.id
+			println "${module.group}:${module.name}:${module.version}"
+		}
+
+		def targetDependencies = [
+				'org.springframework.session:spring-session-data-redis',
+				'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+		]
+
+		println "\nChecking for target dependencies:"
+		targetDependencies.each { target ->
+			def found = configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts.find { artifact ->
+				def module = artifact.moduleVersion.id
+				"${module.group}:${module.name}" == target
+			}
+			println "${target}: ${found ? 'Found' : 'Not Found'}"
+			if (found) {
+				println "  Location: ${found.file}"
+			}
+		}
+	}
+}
+
+// 의존성이 실제로 어디에 존재하는지 확인
+// ./gradlew findDependencyFiles
+task findDependencyFiles {
+	doLast {
+		println "\nSearching in Gradle cache:"
+		println "Cache location: ${project.gradle.gradleUserHomeDir}/caches/modules-2/files-2.1"
+
+		fileTree(project.gradle.gradleUserHomeDir).matching {
+			include "**/caches/modules-2/files-2.1/**/*.jar"
+			include "**/caches/modules-2/files-2.1/**/*.pom"
+		}.each { file ->
+			println "Found: ${file}"
+		}
+	}
+}
+
+// 특정 의존성 다운로드(하위 의존성 포함)
+// ./gradlew clean
+// ./gradlew downloadForMavenRepo --info
+task downloadForMavenRepo {
+	doLast {
+		def specificDependencies = [
+				'org.springframework.session:spring-session-data-redis',
+				'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+		]
+		println "복사 대상 의존성 = [${specificDependencies}]"
+
+		def targetDir = layout.buildDirectory.dir("maven-repo").get().asFile
+		targetDir.mkdirs()
+		println "\n디렉토리 생성 완료 [${targetDir}]"
+
+		// 지정한 의존성들의 전체 의존성 트리 수집
+		def allDependencies = new HashSet()
+
+		configurations.runtimeClasspath.resolvedConfiguration.firstLevelModuleDependencies.findAll { dep ->
+			def id = "${dep.moduleGroup}:${dep.moduleName}"
+
+			println "\n현재 의존성 정보(ID): $id"
+			println "복사대상 의존성 매칭 결과: ${specificDependencies.any { it == id }}"
+
+			specificDependencies.any { it == id }
+
+		}.each { dep ->
+			println "의존성 하위 의존성 정보 검색 시작 [${dep}]"
+			collectDependencies(dep, allDependencies)
+		}
+
+		println "\n검색한 의존성 정보들(allDependencies) [${allDependencies}]"
+		allDependencies.each { dep ->
+			def pomPath = "${dep.moduleGroup.replace('.', '/')}/${dep.moduleName}/${dep.moduleVersion}"
+
+			// jar 파일 복사
+			copy {
+				from dep.moduleArtifacts.find { it.type == 'jar' }?.file
+				into "${targetDir}/${pomPath}"
+			}
+
+			// pom 파일 복사
+			fileTree(project.gradle.gradleUserHomeDir).matching {
+				include "caches/modules-2/files-2.1/**/${dep.moduleName}-${dep.moduleVersion}.pom"
+			}.each { pomFile ->
+				copy {
+					from pomFile
+					into "${targetDir}/${pomPath}"
+				}
+			}
+		}
+	}
+}
+
+def collectDependencies(dep, collected) {
+	if (!collected.contains(dep)) {
+		collected.add(dep)
+		println "하위 의존성정보 추가 ${dep}"
+		dep.children.each { child ->
+			collectDependencies(child, collected)
+		}
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

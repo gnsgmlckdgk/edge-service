@@ -1,0 +1,140 @@
+Initialized native services in: /Users/hch/.gradle/native
+Initialized jansi services in: /Users/hch/.gradle/native
+The client will now receive all logging from the daemon (pid: 6854). The daemon log file: /Users/hch/.gradle/daemon/8.11.1/daemon-6854.out.log
+Starting 12th build in daemon [uptime: 13 mins 23.031 secs, performance: 99%, GC rate: 0.00/s, heap usage: 0% of 512 MiB, non-heap usage: 21% of 384 MiB]
+Using 10 worker leases.
+Now considering [/Users/hch/Files/Dev/교육/CloudNative/edge-service] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file '/Users/hch/Files/Dev/교육/CloudNative/edge-service/settings.gradle'.
+Projects loaded. Root project using build file '/Users/hch/Files/Dev/교육/CloudNative/edge-service/build.gradle'.
+Included projects: [root project 'edge-service']
+
+> Configure project :
+Evaluating root project 'edge-service' using build file '/Users/hch/Files/Dev/교육/CloudNative/edge-service/build.gradle'.
+Transforming spring-boot-gradle-plugin-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-gradle-plugin:3.3.7-SNAPSHOT:20241219.063648-60) with InstrumentationAnalysisTransform
+Transforming dependency-management-plugin-1.1.7.jar (io.spring.gradle:dependency-management-plugin:1.1.7) with InstrumentationAnalysisTransform
+Transforming spring-boot-buildpack-platform-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-buildpack-platform:3.3.7-SNAPSHOT:20241219.063648-60) with InstrumentationAnalysisTransform
+Transforming spring-boot-loader-tools-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-loader-tools:3.3.7-SNAPSHOT:20241219.063648-60) with InstrumentationAnalysisTransform
+Transforming commons-compress-1.25.0.jar (org.apache.commons:commons-compress:1.25.0) with InstrumentationAnalysisTransform
+Transforming spring-core-6.1.16.jar (org.springframework:spring-core:6.1.16) with InstrumentationAnalysisTransform
+Transforming jackson-annotations-2.14.2.jar (com.fasterxml.jackson.core:jackson-annotations:2.14.2) with InstrumentationAnalysisTransform
+Transforming jackson-core-2.14.2.jar (com.fasterxml.jackson.core:jackson-core:2.14.2) with InstrumentationAnalysisTransform
+Transforming jackson-module-parameter-names-2.14.2.jar (com.fasterxml.jackson.module:jackson-module-parameter-names:2.14.2) with InstrumentationAnalysisTransform
+Transforming jackson-databind-2.14.2.jar (com.fasterxml.jackson.core:jackson-databind:2.14.2) with InstrumentationAnalysisTransform
+Transforming jna-platform-5.13.0.jar (net.java.dev.jna:jna-platform:5.13.0) with InstrumentationAnalysisTransform
+Transforming httpclient5-5.3.1.jar (org.apache.httpcomponents.client5:httpclient5:5.3.1) with InstrumentationAnalysisTransform
+Transforming tomlj-1.0.0.jar (org.tomlj:tomlj:1.0.0) with InstrumentationAnalysisTransform
+Transforming spring-jcl-6.1.16.jar (org.springframework:spring-jcl:6.1.16) with InstrumentationAnalysisTransform
+Transforming jna-5.13.0.jar (net.java.dev.jna:jna:5.13.0) with InstrumentationAnalysisTransform
+Transforming httpcore5-h2-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5-h2:5.2.4) with InstrumentationAnalysisTransform
+Transforming httpcore5-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5:5.2.4) with InstrumentationAnalysisTransform
+Transforming slf4j-api-1.7.36.jar (org.slf4j:slf4j-api:1.7.36) with InstrumentationAnalysisTransform
+Transforming antlr4-runtime-4.7.2.jar (org.antlr:antlr4-runtime:4.7.2) with InstrumentationAnalysisTransform
+Transforming jsr305-3.0.2.jar (com.google.code.findbugs:jsr305:3.0.2) with InstrumentationAnalysisTransform
+Transforming spring-boot-gradle-plugin-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-gradle-plugin:3.3.7-SNAPSHOT:20241219.063648-60) with InstrumentationAnalysisTransform
+Transforming spring-boot-gradle-plugin-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-gradle-plugin:3.3.7-SNAPSHOT:20241219.063648-60) with MergeInstrumentationAnalysisTransform
+Transforming dependency-management-plugin-1.1.7.jar (io.spring.gradle:dependency-management-plugin:1.1.7) with InstrumentationAnalysisTransform
+Transforming dependency-management-plugin-1.1.7.jar (io.spring.gradle:dependency-management-plugin:1.1.7) with MergeInstrumentationAnalysisTransform
+Transforming spring-boot-buildpack-platform-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-buildpack-platform:3.3.7-SNAPSHOT:20241219.063648-60) with InstrumentationAnalysisTransform
+Transforming spring-boot-gradle-plugin-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-gradle-plugin:3.3.7-SNAPSHOT:20241219.063648-60) with ExternalDependencyInstrumentingArtifactTransform
+Transforming spring-boot-buildpack-platform-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-buildpack-platform:3.3.7-SNAPSHOT:20241219.063648-60) with MergeInstrumentationAnalysisTransform
+Transforming dependency-management-plugin-1.1.7.jar (io.spring.gradle:dependency-management-plugin:1.1.7) with ExternalDependencyInstrumentingArtifactTransform
+Transforming spring-boot-loader-tools-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-loader-tools:3.3.7-SNAPSHOT:20241219.063648-60) with InstrumentationAnalysisTransform
+Transforming spring-boot-buildpack-platform-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-buildpack-platform:3.3.7-SNAPSHOT:20241219.063648-60) with ExternalDependencyInstrumentingArtifactTransform
+Transforming spring-boot-loader-tools-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-loader-tools:3.3.7-SNAPSHOT:20241219.063648-60) with MergeInstrumentationAnalysisTransform
+Transforming commons-compress-1.25.0.jar (org.apache.commons:commons-compress:1.25.0) with InstrumentationAnalysisTransform
+Transforming commons-compress-1.25.0.jar (org.apache.commons:commons-compress:1.25.0) with MergeInstrumentationAnalysisTransform
+Transforming spring-boot-loader-tools-3.3.7-SNAPSHOT.jar (org.springframework.boot:spring-boot-loader-tools:3.3.7-SNAPSHOT:20241219.063648-60) with ExternalDependencyInstrumentingArtifactTransform
+Transforming spring-core-6.1.16.jar (org.springframework:spring-core:6.1.16) with InstrumentationAnalysisTransform
+Transforming spring-core-6.1.16.jar (org.springframework:spring-core:6.1.16) with MergeInstrumentationAnalysisTransform
+Transforming commons-compress-1.25.0.jar (org.apache.commons:commons-compress:1.25.0) with ExternalDependencyInstrumentingArtifactTransform
+Transforming jackson-annotations-2.14.2.jar (com.fasterxml.jackson.core:jackson-annotations:2.14.2) with InstrumentationAnalysisTransform
+Transforming jackson-annotations-2.14.2.jar (com.fasterxml.jackson.core:jackson-annotations:2.14.2) with MergeInstrumentationAnalysisTransform
+Transforming jackson-core-2.14.2.jar (com.fasterxml.jackson.core:jackson-core:2.14.2) with InstrumentationAnalysisTransform
+Transforming spring-core-6.1.16.jar (org.springframework:spring-core:6.1.16) with ExternalDependencyInstrumentingArtifactTransform
+Transforming jackson-core-2.14.2.jar (com.fasterxml.jackson.core:jackson-core:2.14.2) with MergeInstrumentationAnalysisTransform
+Transforming jackson-annotations-2.14.2.jar (com.fasterxml.jackson.core:jackson-annotations:2.14.2) with ExternalDependencyInstrumentingArtifactTransform
+Transforming jackson-module-parameter-names-2.14.2.jar (com.fasterxml.jackson.module:jackson-module-parameter-names:2.14.2) with InstrumentationAnalysisTransform
+Transforming jackson-module-parameter-names-2.14.2.jar (com.fasterxml.jackson.module:jackson-module-parameter-names:2.14.2) with MergeInstrumentationAnalysisTransform
+Transforming jackson-core-2.14.2.jar (com.fasterxml.jackson.core:jackson-core:2.14.2) with ExternalDependencyInstrumentingArtifactTransform
+Transforming jackson-databind-2.14.2.jar (com.fasterxml.jackson.core:jackson-databind:2.14.2) with InstrumentationAnalysisTransform
+Transforming jackson-databind-2.14.2.jar (com.fasterxml.jackson.core:jackson-databind:2.14.2) with MergeInstrumentationAnalysisTransform
+Transforming jna-platform-5.13.0.jar (net.java.dev.jna:jna-platform:5.13.0) with InstrumentationAnalysisTransform
+Transforming jna-platform-5.13.0.jar (net.java.dev.jna:jna-platform:5.13.0) with MergeInstrumentationAnalysisTransform
+Transforming httpclient5-5.3.1.jar (org.apache.httpcomponents.client5:httpclient5:5.3.1) with InstrumentationAnalysisTransform
+Transforming jackson-module-parameter-names-2.14.2.jar (com.fasterxml.jackson.module:jackson-module-parameter-names:2.14.2) with ExternalDependencyInstrumentingArtifactTransform
+Transforming httpclient5-5.3.1.jar (org.apache.httpcomponents.client5:httpclient5:5.3.1) with MergeInstrumentationAnalysisTransform
+Transforming tomlj-1.0.0.jar (org.tomlj:tomlj:1.0.0) with InstrumentationAnalysisTransform
+Transforming jackson-databind-2.14.2.jar (com.fasterxml.jackson.core:jackson-databind:2.14.2) with ExternalDependencyInstrumentingArtifactTransform
+Transforming tomlj-1.0.0.jar (org.tomlj:tomlj:1.0.0) with MergeInstrumentationAnalysisTransform
+Transforming jna-platform-5.13.0.jar (net.java.dev.jna:jna-platform:5.13.0) with ExternalDependencyInstrumentingArtifactTransform
+Transforming spring-jcl-6.1.16.jar (org.springframework:spring-jcl:6.1.16) with InstrumentationAnalysisTransform
+Transforming httpclient5-5.3.1.jar (org.apache.httpcomponents.client5:httpclient5:5.3.1) with ExternalDependencyInstrumentingArtifactTransform
+Transforming spring-jcl-6.1.16.jar (org.springframework:spring-jcl:6.1.16) with MergeInstrumentationAnalysisTransform
+Transforming jna-5.13.0.jar (net.java.dev.jna:jna:5.13.0) with InstrumentationAnalysisTransform
+Transforming jna-5.13.0.jar (net.java.dev.jna:jna:5.13.0) with MergeInstrumentationAnalysisTransform
+Transforming tomlj-1.0.0.jar (org.tomlj:tomlj:1.0.0) with ExternalDependencyInstrumentingArtifactTransform
+Transforming httpcore5-h2-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5-h2:5.2.4) with InstrumentationAnalysisTransform
+Transforming httpcore5-h2-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5-h2:5.2.4) with MergeInstrumentationAnalysisTransform
+Transforming httpcore5-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5:5.2.4) with InstrumentationAnalysisTransform
+Transforming spring-jcl-6.1.16.jar (org.springframework:spring-jcl:6.1.16) with ExternalDependencyInstrumentingArtifactTransform
+Transforming httpcore5-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5:5.2.4) with MergeInstrumentationAnalysisTransform
+Transforming jna-5.13.0.jar (net.java.dev.jna:jna:5.13.0) with ExternalDependencyInstrumentingArtifactTransform
+Transforming httpcore5-h2-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5-h2:5.2.4) with ExternalDependencyInstrumentingArtifactTransform
+Transforming slf4j-api-1.7.36.jar (org.slf4j:slf4j-api:1.7.36) with InstrumentationAnalysisTransform
+Transforming slf4j-api-1.7.36.jar (org.slf4j:slf4j-api:1.7.36) with MergeInstrumentationAnalysisTransform
+Transforming antlr4-runtime-4.7.2.jar (org.antlr:antlr4-runtime:4.7.2) with InstrumentationAnalysisTransform
+Transforming httpcore5-5.2.4.jar (org.apache.httpcomponents.core5:httpcore5:5.2.4) with ExternalDependencyInstrumentingArtifactTransform
+Transforming antlr4-runtime-4.7.2.jar (org.antlr:antlr4-runtime:4.7.2) with MergeInstrumentationAnalysisTransform
+Transforming jsr305-3.0.2.jar (com.google.code.findbugs:jsr305:3.0.2) with InstrumentationAnalysisTransform
+Transforming jsr305-3.0.2.jar (com.google.code.findbugs:jsr305:3.0.2) with MergeInstrumentationAnalysisTransform
+Transforming slf4j-api-1.7.36.jar (org.slf4j:slf4j-api:1.7.36) with ExternalDependencyInstrumentingArtifactTransform
+Transforming antlr4-runtime-4.7.2.jar (org.antlr:antlr4-runtime:4.7.2) with ExternalDependencyInstrumentingArtifactTransform
+Transforming jsr305-3.0.2.jar (com.google.code.findbugs:jsr305:3.0.2) with ExternalDependencyInstrumentingArtifactTransform
+Applying dependency management to configuration 'annotationProcessor' in project 'edge-service'
+Applying dependency management to configuration 'apiElements' in project 'edge-service'
+Applying dependency management to configuration 'archives' in project 'edge-service'
+Applying dependency management to configuration 'bootArchives' in project 'edge-service'
+Applying dependency management to configuration 'compileClasspath' in project 'edge-service'
+Applying dependency management to configuration 'compileOnly' in project 'edge-service'
+Applying dependency management to configuration 'default' in project 'edge-service'
+Applying dependency management to configuration 'developmentOnly' in project 'edge-service'
+Applying dependency management to configuration 'implementation' in project 'edge-service'
+Applying dependency management to configuration 'mainSourceElements' in project 'edge-service'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'edge-service'
+Applying dependency management to configuration 'runtimeClasspath' in project 'edge-service'
+Applying dependency management to configuration 'runtimeElements' in project 'edge-service'
+Applying dependency management to configuration 'runtimeOnly' in project 'edge-service'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'edge-service'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'edge-service'
+Applying dependency management to configuration 'testCompileClasspath' in project 'edge-service'
+Applying dependency management to configuration 'testCompileOnly' in project 'edge-service'
+Applying dependency management to configuration 'testImplementation' in project 'edge-service'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'edge-service'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'edge-service'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'edge-service'
+All projects evaluated.
+Task name matched 'downloadForMavenRepo'
+Selected primary task 'downloadForMavenRepo' from project :
+Tasks to be executed: [task ':downloadForMavenRepo']
+Tasks that were excluded: []
+Resolve mutations for :downloadForMavenRepo (Thread[Execution worker,5,main]) started.
+:downloadForMavenRepo (Thread[Execution worker Thread 5,5,main]) started.
+Starting process 'command '/usr/libexec/java_home''. Working directory: /Users/hch/.gradle/daemon/8.11.1 Command: /usr/libexec/java_home -V
+Successfully started process 'command '/usr/libexec/java_home''
+
+> Task :downloadForMavenRepo
+Caching disabled for task ':downloadForMavenRepo' because:
+  Build cache is disabled
+Task ':downloadForMavenRepo' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolving global dependency management for project 'edge-service'
+Excluding []
+Excluding []
+Excluding []
+
+BUILD SUCCESSFUL in 747ms
+1 actionable task: 1 executed
+Watched directory hierarchies: []
